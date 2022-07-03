@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1>Add Products</h1>
+      <input type="text" id="id" placeholder="enter to add" />
+      <input type="text" id="name" placeholder="enter to add" />
+      <input type="number" id="price" placeholder="enter to add" />
+
+      <button onclick="addProd()">Add products</button>
+    </div>
+
+    <div>
+      <input type="text" id="delete_id" />
+      <button onclick="delProd()">Delete-Prod</button>
+    </div>
+
+    <br />
+    <div>
+      <input type="text" id="update_id" />
+      <button onclick="updateProd()">Update-Prod</button>
+    </div>
+
+    <br />
+    <div>
+      <input type="text" id="put_id" />
+      <button onclick="changeAllProd()">Update-Prod</button>
+    </div>
+  </body>
+</html>
+
+<script>
+  async function addProd() {
+    const data = {
+      id: document.getElementById("id").value,
+      name: document.getElementById("name").value,
+      price: document.getElementById("price").value,
+    };
+
+    // POST request done  --> Adding data to Json-server in back end
+    let res = await fetch("http://localhost:3000/api/products", {
+      method: "POST",
+
+      body: JSON.stringify(data),
+
+      headers: { "Content-Type": "application/json" },
+    });
+
+    let fin_Data = await res.json();
+
+    // let res = await fetch("http://localhost:3000/api/products");
+    // let fin_Data = await res.json();  // This is GET request -  Getting the data
+  }
+
+  async function delProd() {
+    let id = document.getElementById("delete_id").value;
+
+    let res = await fetch(`http://localhost:3000/api/products/${id}`, {
+      method: "DELETE",
+
+      headers: { "Content-Type": "application/json" },
+    });
+    let fin_Data = await res.json();
+  }
+
+  // PATCH request done --> Do smalll changes to the perticular id passed in body
+
+  async function updateProd() {
+    let id = document.getElementById("update_id").value;
+
+    let res = await fetch(`http://localhost:3000/api/products/${id}`, {
+      method: "PATCH",
+
+      body: JSON.stringify({
+        name: "Thakur",
+      }),
+
+      headers: { "Content-Type": "application/json" },
+    });
+    let fin_Data = await res.json();
+  }
+
+  // PUT request done  --> Removes all the data nd keeps wat is passed in body
+
+  async function changeAllProd() {
+    let id = document.getElementById("put_id").value;
+
+    let res = await fetch(`http://localhost:3000/api/products/${id}`, {
+      method: "PUT",
+
+      body: JSON.stringify({
+        name: "Thakur",
+      }),
+
+      headers: { "Content-Type": "application/json" },
+    });
+    let fin_Data = await res.json();
+  }
+</script>
